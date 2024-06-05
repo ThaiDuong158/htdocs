@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $password = $_POST['pass'];
 
   // Chuẩn bị truy vấn SQL
-  $stmt = $pdo->prepare("SELECT * FROM `dangnhap` WHERE `tenTaiKhoan` = :username AND `matKhau` = :pass");
+  $stmt = $pdo->prepare("SELECT * FROM `taikhoan` WHERE `tenTaiKhoan` = :username AND `matKhau` = :pass");
   $stmt->bindParam(':username', $username);
   $stmt->bindParam(':pass', $password);
 
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   // Lấy thông tin tài khoản
   $user = $stmt->fetch();
-  $stmt = $pdo->prepare("SELECT * FROM `dangnhap` WHERE `tenTaiKhoan` = :username AND `matKhau` = :pass");
+  $stmt = $pdo->prepare("SELECT * FROM `taikhoan` WHERE `tenTaiKhoan` = :username AND `matKhau` = :pass");
   $stmt->bindParam(':username', $username);
   $stmt->bindParam(':pass', $password);
 
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($count > 0) {
       if (password_verify($password, password_hash($user['matKhau'], PASSWORD_BCRYPT))) {
         $cookie_name = "user";
-        $cookie_value = "21004277";
+        $cookie_value = $user['mssv'];
         setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
         header("Location: ../TrangMau/index.php");
       } else {
