@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@dnd-kit/core": "^6.1.0",
+    "filepond": "^4.31.1"
+  }
+}
