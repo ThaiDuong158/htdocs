@@ -4,7 +4,7 @@
 $server = "localhost";
 $username = "root";
 $password = "";
-$dbname = "ptiot";
+$dbname = "da1";
 
 // Khởi tạo kết nối PDO
 $pdo = new PDO("mysql:host=$server;dbname=$dbname", $username, $password);
