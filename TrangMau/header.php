@@ -23,14 +23,11 @@
                 } else {
                     include '../TrangMau/connSql.php';
                     $mssv = $_COOKIE[$cookie_name];
-                    // $sql = 'SELECT `taikhoan`.*, `quyen`.`tenQuyen`
-                    //         FROM `taikhoan` 
-                    //             LEFT JOIN `quyen` ON `taikhoan`.`idPhanQuyen` = `quyen`.`idQuyen`
-                    //             WHERE `mssv` = ' . $mssv . ';';
-                    $sql = "SELECT `taikhoan`.*, `phanquyen`.`tenPhanQuyen`
-                            FROM `taikhoan` 
-                                LEFT JOIN `phanquyen` ON `taikhoan`.`IDPhanQuyen` = `phanquyen`.`IDPhanQuyen`
-                                WHERE `mssv` = ' . $mssv . ';";
+                    $sql = "SELECT `sinhvien`.*, `quyen`.`tenQuyen`
+                            FROM `sinhvien`, `quyen` 
+                                LEFT JOIN `dangnhap` ON `dangnhap`.`idQuyen` = `quyen`.`idQuyen`
+                                WHERE   `MaSV` = '" . $mssv ."' AND
+                                        `dangnhap`.`idUser` = `sinhvien`.`MaSV`;";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         // output data of each row
@@ -38,14 +35,14 @@
                             echo '
                                 <div class="header__login d-inline-flex align-items-center text-white">
                                     <img src="../icon/basicUser.jpg" class="rounded-circle" alt="Cinque Terre" width="25" height="25">
-                                    <p>' . $row["tenTaiKhoan"] . '</p>
+                                    <p>' . $row["TenSV"] . '</p>
                                     <div class="dropdown-list" style="width: 280px;">
                                         <div class="dropdown-info d-flex flex-column align-items-center">
                                             <img src="../icon/basicUser.jpg" class="rounded-circle" alt="" width="90" height="90">
                                             <div class="dropdown-text">
-                                                <p>' . $row["tenTaiKhoan"] . '</p>
-                                                <p>' . $row["mssv"] . '</p>
-                                                <p>' . $row["tenPhanQuyen"] . '</p>
+                                                <p>' . $row["TenSV"] . '</p>
+                                                <p>' . $row["MaSV"] . '</p>
+                                                <p>' . $row["tenQuyen"] . '</p>
                                             </div>
                                         </div>
                                         <div class="dropdown-setting d-flex justify-content-between">
