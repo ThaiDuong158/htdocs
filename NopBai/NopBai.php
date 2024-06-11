@@ -52,18 +52,7 @@
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelector('.sidebar-mini').click();
-        });
-        let buttons = document.querySelectorAll('.btn--back');
-        buttons.forEach(button => {
-            button.addEventListener('click', function () {
-                window.location.href = '../NopBai/TrangThaiNopBai.php';
-            });
-        });
-    </script>
-
+    <?php include'../TrangMau/hideSidebar.php'?>
 </body>
 <script src="../js/main.js"></script>
 <script src="../js/dnd.js"></script>

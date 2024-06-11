@@ -94,7 +94,10 @@
                                 <h4 class="contect--item__title">6. KIỂM TRA ĐÁNH GIÁ</h4>
                                 <ul class="content--list__l2">
                                     <li class="content--item__l2">
-                                        <i class="content--item__icon fa-solid fa-file"></i>
+                                        <a href="../BaiKiemTra/TrangThaiKiemTra.php" class="content--item__link">
+                                            <i class="content--item__icon fa-solid fa-file"></i>
+                                            <p class="content--item__l2--title">Kiểm Tra</p>
+                                        </a>
                                     </li>
                                 </ul>
                             </li>
@@ -105,7 +108,7 @@
             </div>
         </div>
     </div>
-    <?php include'../TrangMau/hideSidebar.php'?>
+    <?php include '../TrangMau/hideSidebar.php' ?>
 </body>
 <script src="../js/main.js"></script>
 
