@@ -123,3 +123,16 @@ tr td:nth-child(1) {
     text-decoration: none;
     color: #fff;
 }
+
+.cau {
+    
+}
+
+.cau--Hoi {
+    padding: 8px 0;
+}
+
+.cau-TraLoi {
+    margin-right: 8px;
+    margin-top: 6px;
+}
