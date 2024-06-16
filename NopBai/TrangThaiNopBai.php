@@ -37,7 +37,7 @@
                             </tr>
                             <tr>
                                 <td>File submissions</td>
-                                <td>21004277_PhanDangThaiDuong.docx April 2024, 5:10 PM</td>
+                                <td>21004277_PhanDangThaiDuong.docx</td>
                             </tr>
                         </table>
                         <button class="btn--change btn btn-success">

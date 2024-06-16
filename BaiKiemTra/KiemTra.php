@@ -75,73 +75,18 @@ $conn->close();
                             <button class="nopBai btn btn-primary">
                                 Nộp bài và kết thúc
                             </button>
-                            <script>
-                                document.querySelector('.nopBai').addEventListener('click', () => {
-                                    var ketQua = [];
-                                    document.querySelectorAll('.cau').forEach((cau, i) => {
-                                        var cauTraLoi = 0;
-                                        var cauHoi = cau.querySelector('.cauHoi').innerHTML;
-                                        cau.querySelectorAll('.cau-TraLoi').forEach((cauTL) => {
-                                            if (cauTL.checked) {
-                                                cauTraLoi = cauTL.value;
-                                            }
-                                        })
-                                        ketQua.push({ cau: i + 1, question: cauHoi, dapAn: cauTraLoi });
-                                    })
-                                    var daXuatHienAlert = false;
-                                    ketQua.forEach((item) => {
-                                        if (item.dapAn == 0) {
-                                            if (!daXuatHienAlert) { // Kiểm tra trước khi hiển thị hộp thoại cảnh báo
-                                                alert('Bạn Chưa Trả Lời hết Câu Hỏi!');
-                                                daXuatHienAlert = true; // Đánh dấu đã xuất hiện hộp thoại cảnh báo
-                                            }
-                                            return;
-                                        }
-                                    })
-                                    if (!daXuatHienAlert) {
-                                        var xhr = new XMLHttpRequest();
-                                        xhr.open("GET", "./ketQua.php", true);
-                                        xhr.onreadystatechange = function () {
-                                            if (xhr.readyState === 4 && xhr.status === 200) {
-                                                var result = JSON.parse(xhr.responseText);
-                                                var questions = result.questions;
-                                                var answers = result.answers;
-                                                var dung = 0;
-                                                ketQua.forEach((traLoi, i) => {
-                                                    var index = questions.indexOf(traLoi.question);
-                                                    if (index !== -1 && traLoi.dapAn === answers[index]) {
-                                                        dung++;
-                                                    }
-                                                });
-                                                var diem = (dung / ketQua.length * 10).toFixed(2);
-                                                var form = document.createElement('form');
-                                                form.setAttribute('method', 'post');
-                                                form.setAttribute('action', '../BaiKiemTra/TrangThaiKiemTra.php');
-
-                                                // Tạo một input ẩn để chứa điểm
-                                                var inputDiem = document.createElement('input');
-                                                inputDiem.setAttribute('type', 'hidden');
-                                                inputDiem.setAttribute('name', 'diem');
-                                                inputDiem.setAttribute('value', diem);
-                                                form.appendChild(inputDiem);
-                                                // Gửi form đi
-                                                document.body.appendChild(form);
-                                                form.submit();
-                                            }
-                                        };
-                                        xhr.send();
-
-                                    }
-                                })
-                            </script>
                         </div>
-                        <div class="col-3">
-                            <div class="kiemTra-list d-flex flex-wrap">
+                        <div class="col-3 sticky">
+                            <div class="row kiemTra-list d-flex flex-wrap">
                                 <?php
                                 for ($j = 1; $j < $i; $j++) {
                                     echo '<a href="#cau-' . $j . '">' . $j . '</a>';
                                 }
                                 ?>
+                            </div>
+                            <div class="row kiemTra-ThoiGian d-flex">
+                                <h5 class="kiemTra-ThoiGian__title">Thời gian còn lại: </h5>
+                                <h5 class="kiemTra-ThoiGian__Chay">00:20:00</h5>
                             </div>
                         </div>
                     </div>
@@ -155,5 +100,5 @@ $conn->close();
     ?>
 </body>
 <script src="../js/main.js"></script>
-
+<script src="../js/kiemTra.js"></script>
 </html>

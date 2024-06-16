@@ -41,8 +41,8 @@
                             <div class="row content--row">
                                 <div class="col-3"></div>
                                 <div class="col">
-                                    <button class="btn--back btn btn-success">LƯU NHƯNG THAY ĐỔI</button>
-                                    <button class="btn--back btn btn-danger">HỦY BỎ</button>
+                                    <button class="btn--back btn btn-success btn--save">LƯU NHƯNG THAY ĐỔI</button>
+                                    <button class="btn--back btn btn-danger btn--cancel">HỦY BỎ</button>
                                 </div>
                             </div>
                         </div>
@@ -56,5 +56,5 @@
 </body>
 <script src="../js/main.js"></script>
 <script src="../js/dnd.js"></script>
-
+<script src="../js/nopBai.js"></script>
 </html>
