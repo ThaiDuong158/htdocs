@@ -1,11 +1,11 @@
 <?php
 session_start();
-// if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] != "") {
+if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] != "") {
 
 include("../css/head.php");
-include("../TKB/connect.php");
+include("../connect.php");
 
-$Masv=$_COOKIE["user"];
+$Masv=$_SESSION["user_id"];
 
 $sql = "SELECT * FROM SINHVIEN WHERE MaSV = ?";
 $stmt = $conn->prepare($sql);
@@ -16,12 +16,6 @@ $row = $result->fetch_assoc();
 $stmt->close();
 ?>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <?php include '../TrangMau/link.php'; ?>
-  <title>Document</title>
-</head>
 <body>
     <div class="main container-fluid">
         <?php include("../TrangMau/header.php"); ?>
@@ -44,7 +38,7 @@ $stmt->close();
                                             <table class="table table-striped" width="75%">
                                                 <tbody>
                                                     <?php
-                                                    include("../TKB/connect.php");
+                                                    include("../connect.php");
                                                     $sql = "SELECT * FROM SINHVIEN WHERE MaSV ='".$Masv."'";
                                                     $result = mysqli_query($conn, $sql);
                                                     if (mysqli_num_rows($result) > 0) {
@@ -110,9 +104,6 @@ $stmt->close();
                                                     if (mysqli_num_rows($result) > 0) {
                                                         $row = mysqli_fetch_assoc($result); // Lấy một dòng dữ liệu
                                                         $Filehinh = $row["FileHinh"];
-                                                        if ($Filehinh == null) {
-                                                            $Filehinh = '../icon/basicUser.jpg';
-                                                        }
                                                     }
                                                     ?>
                                                     <img src="<?php echo $Filehinh; ?>" alt="ảnh sinh viên" id="student-image">
@@ -162,7 +153,7 @@ $stmt->close();
                                                     LEFT JOIN
                                                         GiangVien G2 ON L.CVHT = G2.MaGV
                                                     WHERE 
-                                                        SV.MaSV = '21004277'";
+                                                        SV.MaSV = '21004276'";
                                                             $result = $conn->query($sql);
 
                                                             if ($result->num_rows > 0) {
@@ -170,6 +161,7 @@ $stmt->close();
                                                                 $malop = $row["MaLop"];
                                                                 $tenlop = $row["TenLop"];
                                                                 $tenkhoa = $row["TenKhoa"];
+                                                                // $TenNganh = $row["TenNganh"];
                                                                 $TenGV_GVQL = $row["TenGV_GVQL"];
                                                                 $Mail_GVQL = $row["Mail_GVQL"];
                                                                 $TenGV_CVHT = $row["TenGV_CVHT"];
@@ -187,6 +179,10 @@ $stmt->close();
                                                             <td width='30%'>Tên khoa</td>
                                                            <td><span class='text-bold'>" . $tenkhoa . "</span></td>
                                                      </tr>";
+                                                    //             echo "<tr>
+                                                    //         <td width='30%'>Tên chuyên ngành</td>
+                                                    //        <td><span class='text-bold'>" . $TenNganh . "</span></td>
+                                                    //  </tr>";
                                                                 echo "<tr>
                                                             <td width='30%'>Tên Giáo viên quản lý </td>
                                                            <td><span class='text-bold'>" . $TenGV_GVQL . "</span></td>
@@ -219,11 +215,11 @@ $stmt->close();
                 </div>
                 <?php
                 include("../TrangMau/footer.php");
-                include '../TrangMau/hideSidebar.php';
                 ?>
             </div>
         </div>
     </div>
+    <?php include'../TrangMau/hideSidebar.php';?>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -274,8 +270,8 @@ $stmt->close();
 
 </html>
 <?php
-// }
-// else
-// header("location:../DangNhap/dangnhap.php")
+}
+else
+header("location:../DangNhap/dangnhap.php")
 
 ?>

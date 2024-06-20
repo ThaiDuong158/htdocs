@@ -2,7 +2,7 @@
 session_start();
 include_once "php/config.php";
 if (!isset($_SESSION['user_id'])) {
-    header("location: ../login/dangnhap.php");
+    header("location:../DangNhap/dangnhap.php");
 }
 ?>
 <?php include_once "header.php"; ?>
@@ -12,8 +12,8 @@ if (!isset($_SESSION['user_id'])) {
         <section class="chat-area">
             <header>
                 <?php
-                $user_id = mysqli_real_escape_string($conn, $_GET['user_id']);
-                $sql = mysqli_query($conn, "SELECT * FROM SinhVien WHERE MaSV = {$user_id}");
+                $user_id = $_SESSION['user_id'];
+                $sql = mysqli_query($conn, "SELECT * FROM sinhvien WHERE `MaSV` = {$user_id}");
                 if (mysqli_num_rows($sql) > 0) {
                     $row = mysqli_fetch_assoc($sql);
                 } else {
@@ -21,11 +21,13 @@ if (!isset($_SESSION['user_id'])) {
                 }
                 ?>
                 <a href="index.php" class="back-icon"><i class="fas fa-arrow-left"></i></a>
-                <img src="../TTCN/ <?php echo $row['FileHinh']; ?>" alt="">
+                <img src="../icon/basicUser.jpg" alt="">
+                <?php echo $row['FileHinh']; ?>
                 <div class="details">
                     <span><?php echo $row['TenSV'] ?></span>
                     <p><?php echo $row['status']; ?></p>
                 </div>
+                
             </header>
             <div class="chat-box">
 

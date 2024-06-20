@@ -1,30 +1,19 @@
 <?php
 session_start();
+include("../css/head.php");
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="icon" href="../icon/iconVLUTE.png">
-    <?php include '../TrangMau/link.php'; ?>
-    <title>Thông Tin Cá Nhân</title>
-    <link rel="stylesheet" href="../css/tkb.css">
-</head>
+<link rel="stylesheet" href="../css/tkb.css">
 
 <body>
     <div class="main container-fluid">
-
         <?php
-        include ("../TrangMau/header.php");
+        if (isset($_SESSION["user_id"]) && $_SESSION["user_id"])
+            include("../TrangMau/header.php");
+        else include("../TrangMau/header_login.php");
         ?>
         <div class="row">
             <?php
-            include ("../TrangMau/sidebar.php");
+            include("../TrangMau/sidebar.php");
             ?>
             <div class="col table-responsive bg-light d-flex flex-column justify-content-between">
                 <div class="content row container-fluid">
@@ -33,14 +22,13 @@ session_start();
                             <h3>Thời khóa biểu của sinh viên</h3>
 
                             <div class="search-container">
-                                <input type="text" id="search-box" class="search-box"
-                                    placeholder="Mã SV / Họ tên. Ví dụ: 14001001, nguyenvăn, Nguyễn Văn, ...">
+                                <input type="text" id="search-box" class="search-box" placeholder="Mã SV / Họ tên. Ví dụ: 14001001, nguyenvăn, Nguyễn Văn, ...">
 
                                 <div class="semester-container">
                                     <select class="semester-select" id="semesterSelect">
                                         <option value="">-- Chọn học kỳ --</option>
                                         <?php
-                                        include ("../TKB/connect.php");
+                                        include("../connect.php");
 
                                         $sql = "SELECT * FROM `hocki`";
                                         $result = mysqli_query($conn, $sql);
@@ -71,13 +59,13 @@ session_start();
                             </div>
                             <div id="tkbContent" style="display: none;">
                                 <div class="row container-fluid">
-                                    <div class="tab-content active" id="TheoNgay">
+                                    <div class="tab-content" id="TheoNgay">
                                         <p>Nội dung cho tab Theo ngày</p>
                                     </div>
-                                    <div class="tab-content" id="DangBang">
+                                    <div class="tab-content " id="DangBang">
                                         <p>Nội dung cho tab Dạng bảng</p>
                                     </div>
-                                    <div class="tab-content" id="DangDS">
+                                    <div class="tab-content active" id="DangDS">
                                         <p>Nội dung cho tab Dạng danh sách</p>
                                     </div>
                                     <div class="tab-content" id="danglich">
@@ -91,8 +79,7 @@ session_start();
                 </div>
 
                 <?php
-                include ("../TrangMau/footer.php");
-                include '../TrangMau/hideSidebar.php';
+                include("../TrangMau/footer.php");
                 ?>
             </div>
         </div>
@@ -101,28 +88,31 @@ session_start();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/main.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.sidebar-mini').click();
+        });
+
         const searchBox = document.getElementById('search-box');
         const studentDropDown = document.getElementById('studentDropDown');
         const tkbContent = document.getElementById('tkbContent');
         const semesterSelect = document.getElementById('semesterSelect');
         const displayTypeSelect = document.getElementById('displayTypeSelect');
-
         function loadTKB(maSV) {
             const selectedSemester = semesterSelect.value;
             const selectedDisplayType = displayTypeSelect.value;
             loadTabContent(selectedDisplayType, maSV, selectedSemester);
         }
 
-        searchBox.addEventListener('keyup', function () {
+        searchBox.addEventListener('keyup', function() {
             const query = this.value;
             if (query.length > 0) {
                 fetch('xuly.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: `query=${query}`
-                })
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `query=${query}`
+                    })
                     .then(response => response.text())
                     .then(data => {
                         studentDropDown.innerHTML = data;
@@ -133,7 +123,7 @@ session_start();
             }
         });
 
-        document.addEventListener('click', function (event) {
+        document.addEventListener('click', function(event) {
             if (event.target.classList.contains('student-item')) {
                 const maSV = event.target.dataset.masv;
                 searchBox.value = maSV;
@@ -142,19 +132,18 @@ session_start();
                 loadTKB(maSV);
             }
         });
-
-        semesterSelect.addEventListener('change', function () {
+        semesterSelect.addEventListener('change', function() {
             const maSV = searchBox.value;
             const selectedSemester = this.value;
 
             // Lưu thông tin maSV và mahk vào session hoặc database
             fetch('save_data.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `maSV=${maSV}&mahk=${selectedSemester}`
-            })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `maSV=${maSV}&mahk=${selectedSemester}`
+                })
                 .then(response => {
                     if (response.ok) {
                         console.log("Gửi dữ liệu thành công!");
@@ -170,7 +159,7 @@ session_start();
                 });
         });
 
-        displayTypeSelect.addEventListener('change', function () {
+        displayTypeSelect.addEventListener('change', function() {
             const selectedDisplayType = this.value;
 
             loadTabContent(selectedDisplayType);
@@ -219,6 +208,16 @@ session_start();
             } else {
                 console.error("Lỗi: Không tìm thấy tab content với ID:", tabTarget);
             }
+
+            // Xử lý chuyển đổi tab
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tabContent => {
+                if (tabContent.id === tabTarget) {
+                    tabContent.classList.add('active');
+                } else {
+                    tabContent.classList.remove('active');
+                }
+            });
         }
     </script>
 </body>

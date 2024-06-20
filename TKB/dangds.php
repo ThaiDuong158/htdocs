@@ -31,19 +31,19 @@
 
 <body>
     <?php
-    
-    if (isset($_POST['maSV']) && isset($_POST['mahk'])) {
-        $maSV = $_POST['maSV'];
-        $mahk = $_POST['mahk'];
+
+    if (isset($_GET['maSV']) && isset($_GET['mahk'])) {
+        $maSV = $_GET['maSV'];
+        $mahk = $_GET['mahk'];
         // Câu truy vấn SQL với điều kiện MaH
         include("../connect.php");
         $sql = "SELECT l.MaLopHP, m.TenMon, g.TenGV, p.TenPhong ,p.MaPhong,t.Thu,t.TuanBatDau,t.TuanKetThuc,t.Tiet,T.TietBatDau
                 FROM tkb t
                 INNER JOIN lophp l ON t.MaLopHP = l.MaLopHP
                 INNER JOIN mon m ON l.MaMon = m.MaMon
-                INNER JOIN giangvien g ON m.MaGV = g.MaGV
+                INNER JOIN giangvien g ON l.MaGV = g.MaGV
                 INNER JOIN phong p ON l.phonghoc = p.MaPhong
-                WHERE t.MaSV = '$maSV' AND l.MaHK = '$mahk'"; // Thêm điều kiện MaHK ở đây
+                WHERE t.MaSV = '$maSV' AND l.MaHK = '$mahk'";
 
         $result = mysqli_query($conn, $sql);
         if (!$result) {
@@ -52,7 +52,6 @@
 
         $tkb = array();
         if (mysqli_num_rows($result) > 0) {
-
             while ($row = mysqli_fetch_assoc($result)) {
                 $MaLopHP = $row['MaLopHP'];
                 $Mon = $row['TenMon'];
@@ -87,20 +86,21 @@
                 'Saturday' => 'Thứ 7',
                 'Sunday' => 'Chủ nhật'
             );
-            $flag=false;
+            $flag = false;
             // Hiển thị thời khóa biểu
-            foreach ($tkb as $MaLopHP => $info) {
-                $Mon = $info['TenMon'];
-                $GiangVien = $info['GiangVien'];
-                $tenphong = $info['TenPhong'];
-                $thu = $info["Thu"];
-                $TBD = $info["TuanBatDau"];
-                $TKT = $info["TuanKetThuc"];
-                $Tiet = $info["Tiet"];
-                $TietBD = $info["TietBatDau"];
-                $tuanHoc = '';
+            if (isset($tkb)) {
+                foreach ($tkb as $MaLopHP => $info) {
+                    $Mon = $info['TenMon'];
+                    $GiangVien = $info['GiangVien'];
+                    $tenphong = $info['TenPhong'];
+                    $thu = $info["Thu"];
+                    $TBD = $info["TuanBatDau"];
+                    $TKT = $info["TuanKetThuc"];
+                    $Tiet = $info["Tiet"];
+                    $TietBD = $info["TietBatDau"];
+                    $tuanhoc = range($TKT,$TBD)  ;  
 
-
+                    
                     echo '
                 <div class="schedule-box">
                     <div class="schedule-header">
@@ -112,22 +112,38 @@
                     Giảng viên: ' . $GiangVien . '<br>
                     Phòng: ' . $MaPhong . ' ( ' . $tenphong . ' )
                     <br>
-                    Tuần học: ' . $tuanHoc . '
+                    Tuần học: ';
+                    foreach ($tuanhoc as $tuan){
+                        if($tuan == $TBD){
+                            echo ' '.$tuan.' ';
+                        }
+                        else
+                        echo ' '.$tuan.' - ';
+                    };
+                    echo'</br>
                     </div>
                 </div>
                 ';
-                } 
+                }
+            } else {
+                echo '
+                        <div class="schedule-box">
+                            <div class="schedule-header">
+                            <i class="fas fa-calendar-alt"></i> Lịch học
+                            </div>
+                            Không có thời khóa biểu.
+                            ';
             }
-           
-        } else {
-            echo '
+        }
+    } else {
+        echo '
             <div class="schedule-box">
                 <div class="schedule-header">
                 <i class="fas fa-calendar-alt"></i> Lịch học
                 </div>
                 Không có thời khóa biểu.
                 ';
-        }
+    }
     ?>
 
 </body>

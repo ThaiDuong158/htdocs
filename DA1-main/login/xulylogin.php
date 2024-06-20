@@ -1,56 +1,50 @@
 <?php
 
-// Xác định thông tin kết nối cơ sở dữ liệu
+// Database connection details
 $server = "localhost";
 $username = "root";
 $password = "";
 $dbname = "doan1";
 
-// Khởi tạo kết nối PDO
-$pdo = new PDO("mysql:host=$server;dbname=$dbname", $username, $password);
+// Connect to the database
+try {
+  $pdo = new PDO("mysql:host=$server;dbname=$dbname", $username, $password);
+} catch (PDOException $e) {
+  // Handle database connection errors
+  echo "Database connection failed: " . $e->getMessage();
+  exit;
+}
 
-// Xử lý dữ liệu đăng nhập
+// Handle login form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-  // Lấy dữ liệu đăng nhập từ form
+  // Retrieve login data
   $username = $_POST['user'];
   $password = $_POST['pass'];
 
-  // Chuẩn bị truy vấn SQL
-  $stmt = $pdo->prepare("SELECT * FROM `dangnhap` WHERE `tenDangNhap` = :username AND `matKhau` = :pass");
+  // Prepare and execute the SQL query
+  $stmt = $pdo->prepare("SELECT * FROM `dangnhap` WHERE `tenDangNhap` = :username");
   $stmt->bindParam(':username', $username);
-  $stmt->bindParam(':pass', $password);
-
-  // Thực thi truy vấn
   $stmt->execute();
 
-  // Lấy thông tin tài khoản
-  $user = $stmt->fetch();
-  $stmt = $pdo->prepare("SELECT * FROM `dangnhap` WHERE `tenDangNhap` = :username AND `matKhau` = :pass");
-  $stmt->bindParam(':username', $username);
-  $stmt->bindParam(':pass', $password);
+  // Fetch user data
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-  // Thực thi truy vấn
-  $stmt->execute();
-  // Kiểm tra mật khẩu
-  $count = $stmt->fetchColumn();
-  try {
-    if ($count > 0) {
-      if (password_verify($password, password_hash($user['matKhau'], PASSWORD_BCRYPT))) {
-        $cookie_name = "user";
-        $cookie_value = $user['idUser'];
-        setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
-        header("Location: ../TrangMau/index.php");
-      } else {
-        // Xác thực thất bại
-        // Hiển thị thông báo lỗi
-        echo "<div class='alert alert-danger'>Tên đăng nhập hoặc mật khẩu không chính xác!</div>";
-      }
+  // Check if user exists and password matches
+  if ($user) {
+    if ($password === $user['matKhau']) {
+      // Successful login
+      session_start(); // Start a new session
+      $_SESSION['user_id'] = $user['idUser']; // Store user ID in the session
+      header("Location: ../TrangMau/index.php"); // Redirect to the index page
+      exit;
     } else {
-      echo "<div class='alert alert-danger'>không tìm thấy tài khoản!</div></br>";
-      echo "<a href=dangky.php>Nhấn vào để đăng ký</a>";
+      // Incorrect password
+      echo "<div class='alert alert-danger'>Tên đăng nhập hoặc mật khẩu không chính xác!</div>";
+      echo  "<button class ='btn btn-primary' onclick='history.back()'>Go Back</button>";
     }
-  } catch (Exception $e) {
-    echo $e;
+  } else {
+    // User not found
+    echo "<div class='alert alert-danger'>không tìm thấy tài khoản!</div>";
+    echo  "<button class ='btn btn-primary' onclick='history.back()'>Go Back</button>";
   }
 }

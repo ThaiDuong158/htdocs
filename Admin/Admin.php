@@ -13,7 +13,7 @@
     <?php include '../TrangMau/header.php'; ?>
 
     <div class="row">
-      <?php include '../TrangMau/sidebar.php'; ?>
+      <?php include '../TrangMau/sidebarAdmin.php'; ?>
       <div class="col bg-light d-flex flex-column justify-content-between">
         <div class="content row container-fluid" style="height: 100px;">
 

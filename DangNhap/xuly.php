@@ -39,6 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       if (password_verify($password, password_hash($user['matKhau'], PASSWORD_BCRYPT))) {
         $cookie_name = "user";
         $cookie_value = $user['idUser'];
+        session_start();
+        $_SESSION['user_id'] = $user['idUser'];
         setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
         header("Location: ../TrangMau/index.php");
       } else {

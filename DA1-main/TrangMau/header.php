@@ -45,7 +45,7 @@ include("../connect.php");
               </div>
             </div>
             <div class="dropdown-setting d-flex justify-content-between">
-              <button class="dropdown-mk">Đổi mật khẩu</button>
+              <button class="dropdown-mk" id="btndoipass">Đổi mật khẩu</button>
               <button class="dropdown-dx" id="btndangxuat">Đăng xuất</button>
             </div>
           </div>
@@ -79,4 +79,9 @@ include("../connect.php");
         console.error('Request failed:', error);
       });
   });
+
+  document.getElementById("btndoipass").addEventListener('click',function(){
+
+
+});
 </script>

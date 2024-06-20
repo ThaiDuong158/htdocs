@@ -64,16 +64,13 @@
                     );
                 }
             }
+            
             print_r($tkb);
-        }
+        }   
         ?>
     </thead>
     <tbody>
-        <?php
 
-        
-
-        ?>
     </tbody>
 </table>
 <script>

@@ -50,6 +50,8 @@ if (!isset($_SESSION['user_id'])) {
                                         <div class="users-list">
 
                                         </div>
+                                        <span>--- Lớp Học Phần ---</span>
+                                        <div class="group-list">
                                     </section>
                                 </div>
 

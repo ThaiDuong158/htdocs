@@ -31,17 +31,17 @@
 
 <body>
     <?php
-    include("../TKB/connect.php");
-    if (isset($_POST['maSV']) && isset($_POST['mahk'])) {
-        $maSV = $_POST['maSV'];
-        $mahk = $_POST['mahk'];
+    include("../connect.php");
+    if (isset($_GET['maSV']) && isset($_GET['mahk'])) {
+        $maSV = $_GET['maSV'];
+        $mahk = $_GET['mahk'];
 
         // Câu truy vấn SQL với điều kiện MaHK
         $sql = "SELECT l.MaLopHP, m.TenMon, g.TenGV, p.TenPhong ,p.MaPhong,t.Thu,t.TuanBatDau,t.TuanKetThuc,t.Tiet,T.TietBatDau
                 FROM tkb t
                 INNER JOIN lophp l ON t.MaLopHP = l.MaLopHP
                 INNER JOIN mon m ON l.MaMon = m.MaMon
-                INNER JOIN giangvien g ON m.MaGV = g.MaGV
+                INNER JOIN giangvien g ON l.MaGV = g.MaGV
                 INNER JOIN phong p ON l.phonghoc = p.MaPhong
                 WHERE t.MaSV = '$maSV' AND l.MaHK = '$mahk'"; // Thêm điều kiện MaHK ở đây
 
@@ -87,7 +87,7 @@
                 'Saturday' => 'Thứ 7',
                 'Sunday' => 'Chủ nhật'
             );
-            $flag=false;
+            $flag = false;
             // Hiển thị thời khóa biểu
             foreach ($tkb as $MaLopHP => $info) {
                 $Mon = $info['TenMon'];
@@ -98,18 +98,11 @@
                 $TKT = $info["TuanKetThuc"];
                 $Tiet = $info["Tiet"];
                 $TietBD = $info["TietBatDau"];
-                $tuanHoc = '';
+                $tuanhoc = range($TKT, $TBD);
 
 
                 if ($days[date("l")] == $thu) {
                     $flag = true;
-                    for ($i = $TBD; $i <= $TKT; $i++) {
-                        if ($i == $TKT) {
-                            $tuanHoc .= $i;
-                        } else {
-                            $tuanHoc .= $i . ' - ';
-                        }
-                    }
                     echo '
                 <div class="schedule-box">
                     <div class="schedule-header">
@@ -121,21 +114,27 @@
                     Giảng viên: ' . $GiangVien . '<br>
                     Phòng: ' . $MaPhong . ' ( ' . $tenphong . ' )
                     <br>
-                    Tuần học: ' . $tuanHoc . '
+                    Tuần học: ';
+                    foreach ($tuanhoc as $tuan) {
+                        if ($tuan == $TBD) {
+                            echo ' ' . $tuan . ' ';
+                        } else
+                            echo ' ' . $tuan . ' - ';
+                    };
+                    echo '
                     </div>
                 </div>
                 ';
-                } 
+                }
             }
-            if($flag == false){
-                echo'<div class="schedule-box">
+            if ($flag == false) {
+                echo '<div class="schedule-box">
                 <div class="schedule-header">
                 <i class="fas fa-calendar-alt"></i> Lịch học
                 </div>
                 Không có thời khóa biểu.
                 ';
             }
-
         } else {
             echo '
             <div class="schedule-box">
