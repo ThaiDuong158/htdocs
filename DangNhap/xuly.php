@@ -41,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cookie_value = $user['idUser'];
         session_start();
         $_SESSION['user_id'] = $user['idUser'];
+        $_SESSION['idQuyen'] = $user['idQuyen'];
         setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
         header("Location: ../TrangMau/index.php");
       } else {

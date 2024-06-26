@@ -90,6 +90,9 @@
         </div>
     </div>
     <?php include '../TrangMau/hideSidebar.php' ?>
+    <script>
+        document.querySelector('a[href = "../LopHoc/searchLHP.php"]').classList.add('left-line')
+    </script>
 </body>
 <script src="../js/main.js"></script>
 

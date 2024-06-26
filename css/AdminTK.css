@@ -1,0 +1,46 @@
+.div--input {
+    padding: 16px 0;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+}
+
+.div--set {
+    height: fit-content;
+}
+
+.content {
+    align-content: flex-start;
+}
+
+.input--add {
+    margin: 8px;
+}
+
+.input--add label {
+    min-width: 120px;
+    text-align: end;
+}
+
+.div-btn {
+    display: flex;
+    flex-direction: column;
+}
+
+.div-btn button {
+    margin: 8px 0;
+}
+
+.div--table tbody tr:hover {
+    cursor: pointer;
+    background-color: #c6c6c6;
+    color: #fff;
+}
+
+.div--table tbody tr {
+    vertical-align: middle;
+}
+
+.div--table tbody td {
+    max-width: 200px;
+}
