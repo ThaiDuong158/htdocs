@@ -42,9 +42,19 @@
               <div class="input--add">
                 <label for="inp--quyen">Quyền:</label>
                 <select name="Quyền" class="input--type input--select" id="select--quyen">
-                  <option value="1">Admin</option>
-                  <option value="2">Giảng Viên</option>
-                  <option value="3">Sinh Viên</option>
+                  <?php
+                  include '../TrangMau/connSql.php';
+                  $sql = "SELECT * FROM `quyen`";
+                  $result = $conn->query($sql);
+                  if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                      echo '
+                        <option value="' . $row["idQuyen"] . '">' . $row["tenQuyen"] . '</option>
+                      ';
+                    }
+                  }
+                  $conn->close();
+                  ?>
                 </select>
               </div>
             </div>
@@ -56,91 +66,11 @@
           </div>
 
           <div class="div--table">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>STT</th>
-                  <th>Họ và Tên</th>
-                  <th>Mã Người dùng</th>
-                  <th>Gmail</th>
-                  <th>Tên đăng nhập</th>
-                  <th>Mật khẩu</th>
-                  <th>Quyền</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                include '../TrangMau/connSql.php';
-                $i = 1;
-                $sql = "SELECT `admin`.*, `dangnhap`.*, `quyen`.`tenQuyen`
-                        FROM `admin`, `dangnhap` 
-                          LEFT JOIN `quyen` ON `dangnhap`.`idQuyen` = `quyen`.`idQuyen`
-                          WHERE `admin`.`idUser` = `dangnhap`.`idUser`";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
-                    echo '
-                      <tr class="no-select">
-                        <td>' . $i . '</td>
-                        <td>' . $row["HoTen"] . '</td>
-                        <td>' . $row["idUser"] . '</td>
-                        <td>' . $row["Mail"] . '</td>
-                        <td>' . $row["tenDangNhap"] . '</td>
-                        <td>' . $row["matKhau"] . '</td>
-                        <td>' . $row["tenQuyen"] . '</td>
-                      </tr>
-                    ';
-                    $i++;
-                  }
-                }
-
-                $sql = "SELECT `giangvien`.*, `dangnhap`.*, `quyen`.`tenQuyen`
-                        FROM `giangvien`, `dangnhap` 
-                          LEFT JOIN `quyen` ON `dangnhap`.`idQuyen` = `quyen`.`idQuyen`
-                          WHERE `giangvien`.`MaGV` = `dangnhap`.`idUser`";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
-                    echo '
-                      <tr class="no-select">
-                        <td>' . $i . '</td>
-                        <td>' . $row["TenGV"] . '</td>
-                        <td>' . $row["MaGV"] . '</td>
-                        <td>' . $row["Mail"] . '</td>
-                        <td>' . $row["tenDangNhap"] . '</td>
-                        <td>' . $row["matKhau"] . '</td>
-                        <td>' . $row["tenQuyen"] . '</td>
-                      </tr>
-                    ';
-                    $i++;
-                  }
-                }
-
-                $sql = "SELECT `sinhvien`.*,  `dangnhap`.*, `quyen`.`tenQuyen`
-                        FROM `sinhvien`, `dangnhap` 
-                          LEFT JOIN `quyen` ON `dangnhap`.`idQuyen` = `quyen`.`idQuyen`
-                            WHERE `sinhvien`.`MaSV` = `dangnhap`.`idUser`";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
-                    echo '
-                      <tr class="no-select">
-                        <td>' . $i . '</td>
-                        <td>' . $row["TenSV"] . '</td>
-                        <td>' . $row["idUser"] . '</td>
-                        <td>' . $row["Email"] . '</td>
-                        <td>' . $row["tenDangNhap"] . '</td>
-                        <td>' . $row["matKhau"] . '</td>
-                        <td>' . $row["tenQuyen"] . '</td>
-                      </tr>
-                    ';
-                    $i++;
-                  }
-                }
-                $conn->close();
-                ?>
-              </tbody>
-            </table>
+            <?php
+              include '../TrangMau/connSql.php';
+              include '../Admin/loadTK.php';
+              $conn->close();
+            ?>
           </div>
         </div>
         <?php include '../TrangMau/footer.php'; ?>
@@ -149,7 +79,72 @@
   </div>
   <?php include '../TrangMau/hideSidebar.php'; ?>
   <script src="../js/main.js"></script>
-  <script src="../js/adminSelect.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      var btnAdd = document.querySelector('.btn--add');
+      var btnEdit = document.querySelector('.btn--edit');
+      var btnDel = document.querySelector('.btn--del');
+      var mkc;
+      var table = "dangnhap";
+
+      var thongSo = (table, mkc) => {
+        var ht = document.querySelector('#inp--Name').value;
+        var usId = document.querySelector('#inp--id').value;
+        var mail = document.querySelector('#inp--mail').value;
+        var us = document.querySelector('#inp--userName').value;
+        var pass = document.querySelector('#inp--pass').value;
+        var quyen = document.querySelector('#select--quyen').value;
+        return `?table=${encodeURIComponent(table)}&
+                  ht=${encodeURIComponent(ht)}&
+                  usId=${encodeURIComponent(usId)}&
+                  mail=${encodeURIComponent(mail)}&
+                  us=${encodeURIComponent(us)}&
+                  pass=${encodeURIComponent(pass)}&
+                  quyen=${encodeURIComponent(quyen)}&
+                mkc=${encodeURIComponent(mkc)}`;
+      }
+
+      function ajax(btn, fileLoad) {
+        btn.onclick = () => {
+          const ts = thongSo(table, mkc)
+          const xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+              alert("Cập nhật thành công!");
+              document.querySelector('.div--table').innerHTML = this.responseText;
+              initialize();
+            } else if (this.readyState === 4) {
+              alert("Có lỗi xảy ra khi cập nhật.");
+            }
+          };
+          xhttp.open("GET", `${fileLoad}${ts}`, true);
+          xhttp.send();
+        };
+      }
+
+      function initialize() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            eval(this.responseText);
+          }
+        };
+        xhttp.open("GET", "../js/adminSelect.js", true);
+        xhttp.send();
+
+        document.querySelectorAll(".div--table tbody tr").forEach(row => {
+          row.addEventListener('click', () => {
+            mkc = row.querySelectorAll("td")[2].innerText;
+          });
+        });
+        ajax(btnAdd, "../Admin/Add.php");
+        ajax(btnEdit, "../Admin/Edit.php");
+        ajax(btnDel, "../Admin/Del.php");
+      }
+
+      initialize();
+    });
+  </script>
 </body>
 
 </html>

@@ -1,4 +1,16 @@
-<?php 
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>STT</th>
+      <th>Mã môn</th>
+      <th>Mã lớp học phần</th>
+      <th>Số lượng</th>
+      <th>Giảng viên</th>
+      <th>Học kỳ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
     $i = 1;
     $sql = "SELECT `lophp`.*, `giangvien`.`TenGV`, `hocki`.*
             FROM `lophp` 
@@ -20,4 +32,6 @@
         $i++;
       }
     }
-?>
+    ?>
+  </tbody>
+</table>

@@ -46,27 +46,12 @@
               <button class="btn btn-danger btn--del">Xóa</button>
             </div>
           </div>
-
           <div class="div--table">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>STT</th>
-                  <th>Mã môn</th>
-                  <th>Mã lớp học phần</th>
-                  <th>Số lượng</th>
-                  <th>Giảng viên</th>
-                  <th>Học kỳ</th>
-                </tr>
-              </thead>
-              <tbody>
                 <?php
-                include '../TrangMau/connSql.php';
-                include '../Admin/loadLHP.php';
-                $conn->close();
+                  include '../TrangMau/connSql.php';
+                  include '../Admin/loadLHP.php';
+                  $conn->close();
                 ?>
-              </tbody>
-            </table>
           </div>
         </div>
         <?php include '../TrangMau/footer.php'; ?>
@@ -128,7 +113,8 @@
 
         document.querySelectorAll(".div--table tbody tr").forEach(row => {
           row.addEventListener('click', () => {
-            mkc = row.querySelectorAll("td")[1].innerText;
+            mkc = row.querySelectorAll("td")[2].innerText;
+            console.log(mkc);
           });
         });
         ajax(btnAdd, "../Admin/Add.php");

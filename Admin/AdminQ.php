@@ -60,48 +60,11 @@
           </div>
 
           <div class="div--table">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>STT</th>
-                  <th>Mã môn</th>
-                  <th>Câu hỏi</th>
-                  <th>Đáp án 1</th>
-                  <th>Đáp án 2</th>
-                  <th>Đáp án 3</th>
-                  <th>Đáp án 4</th>
-                  <th>Đáp án</th>
-                  <th>Mức độ</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                include '../TrangMau/connSql.php';
-                $i = 1;
-                $sql = "SELECT * FROM `cauhoi`";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
-                    echo '
-                      <tr class="no-select">
-                        <td>' . $i . '</td>
-                        <td>' . $row["MaMon"] . '</td>
-                        <td>' . $row["CauHoi"] . '</td>
-                        <td>' . $row["CauTraLoi1"] . '</td>
-                        <td>' . $row["CauTraLoi2"] . '</td>
-                        <td>' . $row["CauTraLoi3"] . '</td>
-                        <td>' . $row["CauTraLoi4"] . '</td>
-                        <td>' . $row["DapAn"] . '</td>
-                        <td>' . $row["MucDo"] . '</td>
-                      </tr>
-                    ';
-                    $i++;
-                  }
-                }
-                $conn->close();
-                ?>
-              </tbody>
-            </table>
+            <?php
+            include '../TrangMau/connSql.php';
+            include '../Admin/loadQ.php';
+            $conn->close();
+            ?>
           </div>
         </div>
         <?php include '../TrangMau/footer.php'; ?>
@@ -111,6 +74,77 @@
   <?php include '../TrangMau/hideSidebar.php'; ?>
   <script src="../js/main.js"></script>
   <script src="../js/adminSelect.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      var btnAdd = document.querySelector('.btn--add');
+      var btnEdit = document.querySelector('.btn--edit');
+      var btnDel = document.querySelector('.btn--del');
+      var mkc;
+      var table = "cauhoi";
+
+      var thongSo = (table, mkc) => {
+        var mm = document.querySelector('#inp--MM').value;
+        var ch = document.querySelector('#inp--CH').value;
+        var da1 = document.querySelector('#inp--DA1').value;
+        var da2 = document.querySelector('#inp--DA2').value;
+        var da3 = document.querySelector('#inp--DA3').value;
+        var da4 = document.querySelector('#inp--DA4').value;
+        var da = document.querySelector('#inp--DA').value;
+        var md = document.querySelector('#inp--MD').value;
+        return `?table=${encodeURIComponent(table)}&
+                  mm=${encodeURIComponent(mm)}&
+                  ch=${encodeURIComponent(ch)}&
+                  da1=${encodeURIComponent(da1)}&
+                  da2=${encodeURIComponent(da2)}&
+                  da3=${encodeURIComponent(da3)}&
+                  da4=${encodeURIComponent(da4)}&
+                  da=${encodeURIComponent(da)}&
+                  md=${encodeURIComponent(md)}&
+                mkc=${encodeURIComponent(mkc)}`;
+      }
+
+      function ajax(btn, fileLoad) {
+        btn.onclick = () => {
+          const ts = thongSo(table, mkc)
+          const xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+              alert("Cập nhật thành công!");
+              document.querySelector('.div--table').innerHTML = this.responseText;
+              initialize();
+            } else if (this.readyState === 4) {
+              alert("Có lỗi xảy ra khi cập nhật.");
+            }
+          };
+          xhttp.open("GET", `${fileLoad}${ts}`, true);
+          xhttp.send();
+        };
+      }
+
+      function initialize() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            eval(this.responseText);
+          }
+        };
+        xhttp.open("GET", "../js/adminSelect.js", true);
+        xhttp.send();
+
+        document.querySelectorAll(".div--table tbody tr").forEach(row => {
+          row.addEventListener('click', () => {
+            mkc = row.querySelectorAll("td")[2].innerText;
+            console.log(mkc);
+          });
+        });
+        ajax(btnAdd, "../Admin/Add.php");
+        ajax(btnEdit, "../Admin/Edit.php");
+        ajax(btnDel, "../Admin/Del.php");
+      }
+
+      initialize();
+    });
+  </script>
 </body>
 
 </html>
