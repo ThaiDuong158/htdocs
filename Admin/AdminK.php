@@ -36,36 +36,11 @@
           </div>
 
           <div class="div--table">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>STT</th>
-                  <th>Mã khoa</th>
-                  <th>Tên Khoa</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                include '../TrangMau/connSql.php';
-                $i = 1;
-                $sql = "SELECT * FROM `khoa`";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
-                    echo'
-                      <tr class="no-select">
-                        <td>'.$i.'</td>
-                        <td>'.$row["Makhoa"].'</td>
-                        <td>'.$row["TenKhoa"].'</td>
-                      </tr>
-                    ';
-                    $i++;
-                  }
-                }
-                $conn->close();
-                ?>
-              </tbody>
-            </table>
+            <?php
+            include '../TrangMau/connSql.php';
+            include '../Admin/loadKhoa.php';
+            $conn->close();
+            ?>
           </div>
         </div>
         <?php include '../TrangMau/footer.php'; ?>
@@ -73,8 +48,62 @@
     </div>
   </div>
   <?php include '../TrangMau/hideSidebar.php'; ?>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      var btnAdd = document.querySelector('.btn--add');
+      var btnEdit = document.querySelector('.btn--edit');
+      var btnDel = document.querySelector('.btn--del');
+      var mkc;
+      var table = "khoa"
+      var thongSo = (table,mkc) => {
+        var mk = document.querySelector('#inp--MK').value;
+          var tk = document.querySelector('#inp--TK').value;
+        return `?table=${encodeURIComponent(table)}&mk=${encodeURIComponent(mk)}&tk=${encodeURIComponent(tk)}&mkc=${encodeURIComponent(mkc)}`;
+      }
+
+      function ajax(btn, fileLoad) {
+        btn.onclick = () => {
+          const ts = thongSo(table, mkc)
+          const xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+              alert("Cập nhật thành công!");
+              document.querySelector('.div--table').innerHTML = this.responseText;
+              initialize();
+            } else if (this.readyState === 4) {
+              alert("Có lỗi xảy ra khi cập nhật.");
+            }
+          };
+          xhttp.open("GET", `${fileLoad}${ts}`, true);
+          xhttp.send();
+        };
+      }
+
+      function initialize() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            eval(this.responseText);
+          }
+        };
+        xhttp.open("GET", "../js/adminSelect.js", true);
+        xhttp.send();
+
+        document.querySelectorAll(".div--table tbody tr").forEach(row => {
+          row.addEventListener('click', () => {
+            mkc = row.querySelectorAll("td")[1].innerText;
+          });
+        });
+        ajax(btnAdd,"../Admin/Add.php");
+        ajax(btnEdit,"../Admin/Edit.php");
+        ajax(btnDel,"../Admin/Del.php");
+
+      }
+
+      initialize();
+    });
+  </script>
   <script src="../js/main.js"></script>
-  <script src="../js/adminSelect.js"></script>
 </body>
 
 </html>

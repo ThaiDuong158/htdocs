@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $soCau = $_POST["soCau"];
         $sql = "INSERT INTO `diemkt` (`idDiemKT`, `MaMon`, `mssv`, `diemKTra`, `thoiGian`, `soCau`) 
                 VALUES 
-                    (NULL, 'TH1507', '" . $mssv . "', '" . $diem . "', current_timestamp(), '2');";
+                    (NULL, 'TH1507', '" . $mssv . "', '" . $diem . "', current_timestamp(), '" . $soCau . "');";
         $conn->query($sql);
         $conn->close();
     }
