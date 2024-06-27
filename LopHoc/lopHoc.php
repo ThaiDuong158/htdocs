@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include '../TrangMau/link.php'; ?>
     <link rel="stylesheet" href="../css/lopHoc.css">
-    <title>Document</title>
+    <title>Lớp học</title>
 </head>
 
 <body>
@@ -63,7 +63,16 @@
                                         <h4 class="contect--item__title">2. KẾ HOẠCH GIẢNG DẠY</h4>
                                         <ul class="content--list__l2">
                                             <li class="content--item__l2">
-                                                <i class="content--item__icon fa-solid fa-align-justify"></i>
+                                                <?php
+                                                if (isset($_SESSION["idQuyen"]) && ($_SESSION["idQuyen"] == 2)) { ?>
+                                                    <a href="../DiemDanh/DiemDanh.php<?php echo '?id=' . $_GET["id"]; ?>"
+                                                        class="content--item__link">
+                                                        <i class="content--item__icon fa-solid fa-align-justify"></i>
+                                                        <p class="content--item__l2--title">Điểm danh</p>
+                                                    </a>
+                                                    <?php
+                                                }
+                                                ?>
                                             </li>
                                         </ul>
                                     </li>

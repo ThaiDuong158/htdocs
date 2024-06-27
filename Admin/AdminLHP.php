@@ -24,6 +24,10 @@
                 <input type="text" class="input--type" name="Mã Môn" id="inp--MM">
               </div>
               <div class="input--add">
+                <label for="inp--TM">Tên Môn:</label>
+                <input type="text" class="input--type" name="Tên Môn" id="inp--TM">
+              </div>
+              <div class="input--add">
                 <label for="inp--LHP">Mã lớp học phần:</label>
                 <input type="text" class="input--type" name="Mã lớp học phần" id="inp--LHP">
               </div>
@@ -70,12 +74,14 @@
 
       var thongSo = (table, mkc) => {
         var mm = document.querySelector('#inp--MM').value;
+        var tm = document.querySelector('#inp--TM').value;
         var mlhp = document.querySelector('#inp--LHP').value;
         var sl = document.querySelector('#inp--SL').value;
         var gv = document.querySelector('#inp--GV').value;
         var hk = document.querySelector('#inp--HK').value;
         return `?table=${encodeURIComponent(table)}&
                   mm=${encodeURIComponent(mm)}&
+                  tm=${encodeURIComponent(tm)}&
                   mlhp=${encodeURIComponent(mlhp)}&
                   sl=${encodeURIComponent(sl)}&
                   gv=${encodeURIComponent(gv)}&
@@ -113,7 +119,7 @@
 
         document.querySelectorAll(".div--table tbody tr").forEach(row => {
           row.addEventListener('click', () => {
-            mkc = row.querySelectorAll("td")[2].innerText;
+            mkc = row.querySelectorAll("td")[3].innerText;
             console.log(mkc);
           });
         });

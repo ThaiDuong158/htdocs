@@ -15,10 +15,20 @@ if (isset($_GET["table"])) {
             ;
         case "lophp": {
             $mm = $conn->real_escape_string($_GET["mm"]);
+            $tm = $conn->real_escape_string($_GET["tm"]);
             $mlhp = $conn->real_escape_string($_GET["mlhp"]);
             $sl = $conn->real_escape_string($_GET["sl"]);
             $gv = $conn->real_escape_string($_GET["gv"]);
             $hk = $conn->real_escape_string($_GET["hk"]);
+
+            $sql = "SELECT * FROM `mon` WHERE `MaMon` = '$mm'";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows == 0) {
+                $sql = "INSERT INTO `mon` (`MaMon`, `TenMon`, `MaKhoa`)
+                        VALUES ('$mm', '$tm', 'CTT')";
+                $conn->query($sql);
+            }
 
             $sql = "SELECT MaGV FROM `giangvien` WHERE TenGV = '" . $gv . "';";
             $result = $conn->query($sql);
@@ -59,6 +69,7 @@ if (isset($_GET["table"])) {
             $da4 = $conn->real_escape_string($_GET["da4"]);
             $da = $conn->real_escape_string($_GET["da"]);
             $md = $conn->real_escape_string($_GET["md"]);
+
             $sql = "INSERT INTO `cauhoi` 
                         (`idCauHoi`, `MaMon`, `CauHoi`, `CauTraLoi1`, `CauTraLoi2`, `CauTraLoi3`, `CauTraLoi4`, `DapAn`, `MucDo`) 
                     VALUES 

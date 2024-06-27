@@ -37,9 +37,9 @@ ob_start();
                                         $sql = "SELECT DATE_FORMAT(`diemdanh`.`NgayDiemDanh`, '%d/%m') AS `NgayThang`
                                                 FROM `diemdanh` 
                                                     LEFT JOIN `lophp` ON `diemdanh`.`MaLopHP` = `lophp`.`idLopHP`
-                                                    WHERE `lophp`.`MaLopHP` = '232_1TH1507_KS3A_10_ngoaigio'
+                                                    WHERE `lophp`.`idLopHP` = '".$_GET["id"]."'
                                                     GROUP BY `NgayThang`
-                                                    ORDER BY `diemdanh`.`NgayDiemDanh` ASC";
+                                                    ORDER BY `NgayThang` ASC";
                                         $result = $conn->query($sql);
                                         if ($result->num_rows > 0) {
                                             // output data of each row
@@ -57,7 +57,7 @@ ob_start();
                                     $sql = "SELECT `sinhvien`.`TenSV`, `sinhvien`.`MaSV`, `lop`.`malop`
                                             FROM `sinhvien` 
                                                 LEFT JOIN `lop` ON `sinhvien`.`MaLop` = `lop`.`malop`, `lophp`
-                                                WHERE `lophp`.`MaLopHP` = '232_1TH1507_KS3A_10_ngoaigio'
+                                                WHERE `lophp`.`idLopHP` = '".$_GET["id"]."'
                                                 ORDER BY `sinhvien`.`MaSV` ASC;";
                                     $result = $conn->query($sql);
                                     $i = 1;
@@ -74,7 +74,7 @@ ob_start();
                                                         LEFT JOIN `sinhvien` ON `diemdanh`.`MaSV` = `sinhvien`.`MaSV` 
                                                         LEFT JOIN `lophp` ON `diemdanh`.`MaLopHP` = `lophp`.`idLopHP`
                                                         WHERE 	`sinhvien`.`MaSV` = '" . $row["MaSV"] . "' AND
-                                                                `lophp`.`MaLopHP` = '232_1TH1507_KS3A_10_ngoaigio'
+                                                                `lophp`.`idLopHP` = '".$_GET["id"]."'
                                                         ORDER BY `diemdanh`.`NgayDiemDanh` ASC;";
                                             $result1 = $conn->query($sql1);
                                             $i1 = 1;
@@ -125,7 +125,7 @@ ob_start();
                                     `diemdanh`.`MaLopHP` = 
                                     (SELECT `lophp`.`idLopHP` 
                                     FROM lophp 
-                                    WHERE `lophp`.`MaLopHP` = '232_1TH1507_KS3A_10_ngoaigio' )";
+                                    WHERE `lophp`.`idLopHP` = '".$_GET["id"]."' )";
                     $conn->query($sqlt);
                     foreach ($_POST as $key => $value) {
                         if (strpos($key, 'checkbox_') === 0) {
@@ -139,7 +139,7 @@ ob_start();
                                         FROM `diemdanh`
                                             LEFT JOIN `lophp` ON `diemdanh`.`MaLopHP` = `lophp`.`idLopHP`
                                             WHERE   `MaSV` = '$maSV' AND 
-                                                    `lophp`.`MaLopHP` = '232_1TH1507_KS3A_10_ngoaigio'
+                                                    `lophp`.`idLopHP` = '".$_GET["id"]."'
                                             ORDER BY `NgayDiemDanh` ASC
                                             LIMIT " . ($buoiHoc - 1) . ", 1;";
                             $resultDate = $conn->query($sqlDate);
@@ -157,7 +157,7 @@ ob_start();
                     }
                     $conn->close();
                     echo '<script>alert("Cập nhật thành công!");</script>';
-                    echo '<script>window.location.href = "../TrangMau/index.php";</script>';
+                    echo '<script>window.location.href = "../LopHoc/lopHoc.php?id=' . $_GET["id"] . '";</script>';
                 }
                 ?>
 
@@ -170,5 +170,8 @@ ob_start();
 
 </body>
 <script src="../js/main.js"></script>
+<script>
+    document.querySelector('a[href = "../LopHoc/searchLHP.php"]').classList.add('left-line')
+</script>
 
 </html>

@@ -1,10 +1,11 @@
 <?php
 include '../TrangMau/connSql.php';
+$id = $conn->real_escape_string($_GET["id"]);
 $sql = "SELECT `cauhoi`.*
             FROM `cauhoi` 
                 LEFT JOIN `mon` ON `cauhoi`.`MaMon` = `mon`.`MaMon` 
                 LEFT JOIN `lophp` ON `lophp`.`MaMon` = `mon`.`MaMon`
-                WHERE `lophp`.`MaLopHP` = '232_1TH1507_KS3A_10_ngoaigio';";
+                WHERE `lophp`.`idLopHP` = '".$id."';";
 $result = $conn->query($sql);
 $cauHoiArray = [];
 if ($result->num_rows > 0) {

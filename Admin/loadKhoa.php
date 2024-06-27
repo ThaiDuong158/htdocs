@@ -11,7 +11,8 @@ $result = $conn->query($sql);
         </tr>
     </thead>
     <tbody>'
-        <?php if ($result->num_rows > 0) {
+        <?php 
+        if ($result->num_rows > 0) {
             $i = 1;
             while ($row = $result->fetch_assoc()) {
                 echo '

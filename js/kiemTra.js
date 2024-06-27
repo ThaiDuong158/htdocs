@@ -14,16 +14,20 @@ function tinhDiem(ketQua) {
                 }
             });
             var diem = (dung / ketQua.length * 10).toFixed(2);
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const id = urlParams.get('id');
+            const num = urlParams.get('num');
             var xhr1 = new XMLHttpRequest();
             xhr1.open("POST", "../BaiKiemTra/guiDiem.php", true);
             xhr1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr1.onreadystatechange = function () {
                 if (xhr1.readyState === 4 && xhr1.status === 200) {
                     console.log("Đã gửi điểm thành công!");
-                    window.location.href = '../BaiKiemTra/TrangThaiKiemTra.php';
+                    window.location.href = `../BaiKiemTra/TrangThaiKiemTra.php?id=${id}&num=${num}`;
                 }
             };
-            xhr1.send("diem=" + diem + "&soCau=" + ketQua.length);
+            xhr1.send("diem=" + diem + "&soCau=" + ketQua.length + "&id=" + id);
         }
     };
     xhr.send();
@@ -82,4 +86,4 @@ window.onload = function () {
     startCountdown(twentyMinutes, display);
 };
 
-document.querySelector(".kiemTra-ThoiGian").style.top = document.querySelector('.kiemTra-list').clientHeight + 20 + 8 +'px';
+document.querySelector(".kiemTra-ThoiGian").style.top = document.querySelector('.kiemTra-list').clientHeight + 20 + 8 + 'px';

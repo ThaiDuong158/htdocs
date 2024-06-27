@@ -10,10 +10,10 @@
             <i class="sidebar fa-solid fa-calendar-days"></i>
             <p class="sidebar-hide">Thời Khóa Biểu</p>
         </a>
-        <a href="../TTCN/ttcn.php" class="sidebar-item no-select">
+        <!-- <a href="../TTCN/ttcn.php" class="sidebar-item no-select">
             <i class="sidebar fa fa-address-card"></i>
             <p class="sidebar-hide">Thông tin cá nhân</p>
-        </a>
+        </a> -->
         <a href="../LopHoc/searchLHP.php" class="sidebar-item no-select">
             <i class="sidebar fa-solid fa-magnifying-glass"></i>
             <p class="sidebar-hide">Lớp Học</p>

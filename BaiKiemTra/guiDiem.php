@@ -2,10 +2,10 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['diem'])) {
         include '../TrangMau/connSql.php';
-        $diem = $_POST['diem'];
         $mssv = $_COOKIE["user"];
-        $maLopHP = '232_1TH1507_KS3A_10_ngoaigio';
+        $diem = $_POST['diem'];
         $soCau = $_POST["soCau"];
+        $id = $_POST['id'];
         $sql = "INSERT INTO `diemkt` (`idDiemKT`, `MaMon`, `mssv`, `diemKTra`, `thoiGian`, `soCau`) 
                 VALUES 
                     (NULL, 'TH1507', '" . $mssv . "', '" . $diem . "', current_timestamp(), '" . $soCau . "');";
