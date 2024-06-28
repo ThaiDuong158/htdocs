@@ -18,17 +18,17 @@
             <i class="sidebar fa-solid fa-magnifying-glass"></i>
             <p class="sidebar-hide">Lớp Học</p>
         </a>
-        <a href="../chat/chat.php" class="sidebar-item no-select">
+        <a href="../chatgv/chat_group.php" class="sidebar-item no-select">
+            <i class="sidebar fa-solid fa-user-group"></i>
+            <p class="sidebar-hide">Chat group</p>
+        </a>
+        <!-- <a href="../chat/chat.php" class="sidebar-item no-select">
             <i class="sidebar fa-solid fa-comment"></i>
             <p class="sidebar-hide">Chat</p>
-        </a>
+        </a> -->
     <?php } ?>
 
     <?php if (isset($_SESSION["idQuyen"]) && ($_SESSION["idQuyen"] == 3)) { ?>
-        <!-- <a href="../DiemDanh/DiemDanh.php" class="sidebar-item no-select">
-            <i class="sidebar fa-solid fa-calendar-days"></i>
-            <p class="sidebar-hide">Điểm danh</p>
-        </a> -->
         <a href="../TKB/TKB.php" class="sidebar-item no-select">
             <i class="sidebar fa-solid fa-calendar-days"></i>
             <p class="sidebar-hide">Thời Khóa Biểu</p>
@@ -45,6 +45,10 @@
             <i class="sidebar fa-solid fa-comment"></i>
             <p class="sidebar-hide">Chat</p>
         </a>
+        <!-- <a href="../chatgv/chat_group.php" class="sidebar-item no-select">
+            <i class="sidebar fa-solid fa-user-group"></i>
+            <p class="sidebar-hide">Chat group</p>
+        </a> -->
     <?php } ?>
 
     <?php if (isset($_SESSION["idQuyen"]) && $_SESSION["idQuyen"] == 1) { ?>

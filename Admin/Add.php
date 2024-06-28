@@ -1,6 +1,5 @@
 <?php
 include '../TrangMau/connSql.php';
-
 if (isset($_GET["table"])) {
     $table = $_GET["table"];
     switch ($table) {
@@ -79,6 +78,7 @@ if (isset($_GET["table"])) {
             break;
         }
             ;
+
         case "dangnhap": {
             $ht = $conn->real_escape_string($_GET["ht"]);
             $usId = $conn->real_escape_string($_GET["usId"]);
@@ -96,23 +96,23 @@ if (isset($_GET["table"])) {
                     switch ($tenQuyen) {
                         case "Admin": {
                             $sql = "INSERT INTO `admin` 
-                                (`Mail`, `SDT`, `HoTen`, `idUser`) 
-                            VALUES 
-                                ('" . $mail . "', NULL, '" . $ht . "', '" . $usId . "');";
+                                    (`Mail`, `SDT`, `HoTen`, `idUser`) 
+                                VALUES 
+                                    ('" . $mail . "', NULL, '" . $ht . "', '" . $usId . "');";
                             break;
                         }
                         case "Giảng Viên": {
                             $sql = "INSERT INTO `giangvien` 
-                                (`MaGV`, `TenGV`, `SoDienThoai`, `Mail`, `Chucvu`, `Makhoa`) 
-                            VALUES 
-                                ('" . $usId . "', '" . $ht . "', NULL, '. $mail .', NULL, 'CTT');";
+                                    (`MaGV`, `TenGV`, `SoDienThoai`, `Mail`, `Chucvu`, `Makhoa`) 
+                                VALUES 
+                                    ('" . $usId . "', '" . $ht . "', NULL, '. $mail .', NULL, 'CTT');";
                             break;
                         }
                         case "Sinh Viên": {
                             $sql = "INSERT INTO `sinhvien` 
-                                (`MaSV`, `TenSV`, `NamSinh`, `CCCD_CMND`, `NamNhaphoc`, `NienKhoa`, `Email`, `MaLop`, `FileHinh`, `status`) 
-                            VALUES 
-                                ('" . $usId . "', '" . $ht . "', NULL, NULL, '2021', '46', '" . $mail . "', '1CTT21A3', NULL, '');";
+                                    (`MaSV`, `TenSV`, `NamSinh`, `CCCD_CMND`, `NamNhaphoc`, `NienKhoa`, `Email`, `MaLop`, `FileHinh`, `status`) 
+                                VALUES 
+                                    ('" . $usId . "', '" . $ht . "', NULL, NULL, '2021', '46', '" . $mail . "', '1CTT21A3', NULL, '');";
                             break;
                         }
                     }
@@ -121,11 +121,47 @@ if (isset($_GET["table"])) {
             }
 
             $sql = "INSERT INTO `dangnhap` 
-                        (`idDangNhap`, `tenDangNhap`, `matKhau`, `idQuyen`, `idUser`) 
-                    VALUES 
-                        (NULL, '" . $us . "', '" . $pass . "', '" . $quyen . "', '" . $usId . "');";
+                            (`idDangNhap`, `tenDangNhap`, `matKhau`, `idQuyen`, `idUser`) 
+                        VALUES 
+                            (NULL, '" . $us . "', '" . $pass . "', '" . $quyen . "', '" . $usId . "');";
             $conn->query($sql);
             include '../Admin/loadTK.php';
+            break;
+        }
+            ;
+        case "hocphi": {
+            $idSv = $conn->real_escape_string($_GET["idSv"]);
+            $mm = $conn->real_escape_string($_GET["mm"]);
+            $tm = $conn->real_escape_string($_GET["tm"]);
+            $st = $conn->real_escape_string($_GET["st"]);
+            $tt = $conn->real_escape_string($_GET["tt"]);
+            $hk = $conn->real_escape_string($_GET["hk"]);
+            $msvc = $conn->real_escape_string($_GET["msvc"]);
+            $mmc = $conn->real_escape_string($_GET["mmc"]);
+
+            $input = $hk;
+            $parts = explode(", ", $input);
+            $hocKy = $parts[0];
+            $namHoc = $parts[1];
+            $sql = "SELECT `MaHK` FROM `hocki` 
+                    WHERE `TenHK` = '" . $hocKy . "' AND
+                            `NamHoc` = '" . $namHoc . "'
+                    ";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $maHK = $row["MaHK"];
+                    $sql = "INSERT INTO `hocphi` (`idHocPhi `, `MaMon`, `SoTien`, `MaSV`, `TrangThai`, `MaHK`)
+                            VALUES (NULL, '$mm', '$st', '$idSv', '$tt', '$maHK')";
+                    $sql= "INSERT INTO `hocphi` 
+                                (`idHocPhi`, `MaMon`, `SoTien`, `MaSV`, `TrangThai`, `MaHK`) 
+                            VALUES 
+                                (NULL, '".$mm."', '".$st."', '".$idSv."', '".$tt."', '".$row["MaHK"]."');";
+                    $conn->query($sql);
+                }
+            }
+            include '../Admin/loadHP.php';
+
             break;
         }
             ;

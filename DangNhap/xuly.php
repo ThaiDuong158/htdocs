@@ -45,8 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
         header("Location: ../TrangMau/index.php");
       } else {
-        // Xác thực thất bại
-        // Hiển thị thông báo lỗi
         echo "<div class='alert alert-danger'>Tên đăng nhập hoặc mật khẩu không chính xác!</div>";
       }
     } else {

@@ -71,7 +71,8 @@
                         $sql = "SELECT `giangvien`.*, `quyen`.`tenQuyen`
                                 FROM `giangvien`, `quyen` 
                                     LEFT JOIN `dangnhap` ON `dangnhap`.`idQuyen` = `quyen`.`idQuyen`
-                                    WHERE `giangvien`.`MaGV` = `dangnhap`.`idUser`;";
+                                    WHERE `giangvien`.`MaGV` = `dangnhap`.`idUser` AND 
+                                            `giangvien`.`MaGV` = '".$mssv."';";
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             // output data of each row

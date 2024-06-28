@@ -64,15 +64,87 @@
                     );
                 }
             }
-            print_r($tkb);
         }
         ?>
     </thead>
     <tbody>
         <?php
-
-        
-
+        if (isset($tkb)) {
+            $thu_array = array(
+                "Thứ 2" => array(),
+                "Thứ 3" => array(),
+                "Thứ 4" => array(),
+                "Thứ 5" => array(),
+                "Thứ 6" => array(),
+                "Thứ 7" => array(),
+                "Chủ nhật" => array()
+            );
+            // Sắp xếp mảng theo thu
+            foreach ($tkb as $MaLopHP => $info) {
+                $Mon = $info['TenMon'];
+                $GiangVien = $info['GiangVien'];
+                $tenphong = $info['TenPhong'];
+                $thu = $info["Thu"];
+                $TBD = $info["TuanBatDau"];
+                $TKT = $info["TuanKetThuc"];
+                $Tiet = $info["Tiet"];
+                $TietBD = $info["TietBatDau"];
+                $tuanhoc = range($TKT, $TBD);
+                
+                // Kiểm tra xem tiết đã có trong mảng hay chưa
+                if (!isset($thu_array[$thu][$TietBD])) {
+                    // Thêm thông tin vào mảng theo thứ
+                    $thu_array[$thu][$TietBD] = array(
+                        'Mon' => $Mon,
+                        'TietBD' =>$TietBD,
+                        'GiangVien' => $GiangVien,
+                        'TenPhong' => $tenphong,
+                        'TuanBatDau' => $TBD,
+                        'TuanKetThuc' => $TKT,
+                        'Tiet' => $Tiet,
+                    );
+                }
+            }
+            // Hiển thị thông tin lên bảng
+            echo "<tr>";
+            echo "<td>Tiết</td>";
+            for ($i = 1; $i <= 13; $i++) {
+                echo "<td>$i</td>";
+            }
+            echo "</tr>";
+            foreach ($thu_array as $thu => $tiet_array) {
+                echo "<tr>";
+                echo "<td>$thu</td>";
+                for ($i = 1; $i <= 13; $i++) {
+                    if (isset($tiet_array[$i])) {
+                        $Mon = $tiet_array[$i]['Mon'];
+                        $TietBD = $tiet_array[$i]['TietBD'];
+                        $GiangVien = $tiet_array[$i]['GiangVien'];
+                        $TenPhong = $tiet_array[$i]['TenPhong'];
+                        $TBD = $tiet_array[$i]['TuanBatDau'];
+                        $TKT = $tiet_array[$i]['TuanKetThuc'];
+                        $Tiet = $tiet_array[$i]['Tiet'];
+                        if($i==$TietBD){
+                            echo "<td colspan=".($Tiet-1).">
+                            <div class='box'>
+                                <p><strong>$Mon</strong></p>
+                                <p>Giảng viên: $GiangVien</p>
+                                <p>Phòng: $TenPhong</p>
+                                <p>Tuần: $TBD - $TKT</p>
+                                <p>Tiết: $TietBD - $Tiet</p>
+                            </div>
+                        </td>";
+                        }
+                        else{
+                            echo"<td></td>";
+                        }
+                    } else {
+                        echo "<td></td>";
+                    }
+                }
+                echo "</tr>";
+            }
+        }
         ?>
     </tbody>
 </table>

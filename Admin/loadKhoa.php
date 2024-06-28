@@ -25,6 +25,5 @@ $result = $conn->query($sql);
             }
         }
         ?>
-
     </tbody>
 </table>

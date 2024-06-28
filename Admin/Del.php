@@ -72,6 +72,19 @@ if (isset($_GET["table"])) {
             break;
         }
             ;
+        case "hocphi": {
+            $idSv = $conn->real_escape_string($_GET["idSv"]);
+            $mm = $conn->real_escape_string($_GET["mm"]);
+            $sql = "DELETE FROM `hocphi` 
+                    WHERE   `hocphi`.`MaSV` = '" . $idSv . "' AND
+                            `hocphi`.`MaMon` = '" . $mm . "' ";
+            $conn->query($sql);
+
+            include '../Admin/loadHP.php';
+
+            break;
+        }
+            ;
     }
 }
 $conn->close();

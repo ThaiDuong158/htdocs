@@ -55,9 +55,9 @@
       var btnDel = document.querySelector('.btn--del');
       var mkc;
       var table = "khoa"
-      var thongSo = (table,mkc) => {
+      var thongSo = (table, mkc) => {
         var mk = document.querySelector('#inp--MK').value;
-          var tk = document.querySelector('#inp--TK').value;
+        var tk = document.querySelector('#inp--TK').value;
         return `?table=${encodeURIComponent(table)}&mk=${encodeURIComponent(mk)}&tk=${encodeURIComponent(tk)}&mkc=${encodeURIComponent(mkc)}`;
       }
 
@@ -94,9 +94,9 @@
             mkc = row.querySelectorAll("td")[1].innerText;
           });
         });
-        ajax(btnAdd,"../Admin/Add.php");
-        ajax(btnEdit,"../Admin/Edit.php");
-        ajax(btnDel,"../Admin/Del.php");
+        ajax(btnAdd, "../Admin/Add.php");
+        ajax(btnEdit, "../Admin/Edit.php");
+        ajax(btnDel, "../Admin/Del.php");
 
       }
 
